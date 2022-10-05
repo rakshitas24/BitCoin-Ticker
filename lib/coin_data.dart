@@ -36,10 +36,13 @@ const List<String> cryptoList = [
 const coinAPIURL = 'https://rest.coinapi.io/v1/exchangerate';
 const apiKey = '7646B5B6-F895-49FE-AB9E-95A6C59BE45B';
 
+const bitcoinAverageURL =
+    'https://apiv2.bitcoinaverage.com/indices/global/ticker';
+
 class CoinData {
 
-  Future getCoinData() async {
-    String requestURL = '$coinAPIURL/BTC/USD?apikey=$apiKey';
+  Future getCoinData(String selectedCurrency) async {
+    String requestURL = '$bitcoinAverageURL/BTC$selectedCurrency';
 
     http.Response response = await http.get(Uri.parse(requestURL));
 

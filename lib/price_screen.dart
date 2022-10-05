@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, library_private_types_in_public_api, avoid_print
 
 import 'package:bitcoin_ticker/coin_data.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,7 @@ class PriceScreen extends StatefulWidget {
 
 class _PriceScreenState extends State<PriceScreen> {
 
-String selectedCurrency = 'USD';
+String selectedCurrency = 'AUD';
 
 List<Text> getPickerItems() {
   List<Text> pickerItems = [];
@@ -23,6 +23,26 @@ List<Text> getPickerItems() {
   } 
   return pickerItems;
 }
+
+String bitcoinValue = '?';
+
+  void getData() async {
+    try {
+      var data = await CoinData().getCoinData(selectedCurrency);
+      setState(() {
+        bitcoinValue = data;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +64,7 @@ List<Text> getPickerItems() {
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
                 child: Text(
-                  '1 BTC = ? USD',
+                  '1 BTC = $bitcoinValue $selectedCurrency',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 20.0,
@@ -62,7 +82,12 @@ List<Text> getPickerItems() {
             child: CupertinoPicker (
               backgroundColor: Colors.lightBlue,
               itemExtent: 32.0,
-              onSelectedItemChanged: (value) {},
+              onSelectedItemChanged: (value) {
+                setState(() {
+          selectedCurrency = currenciesList[value];
+          getData();
+        });
+              },
               children: getPickerItems(),
             )
           ),
