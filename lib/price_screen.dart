@@ -1,4 +1,8 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
+import 'package:bitcoin_ticker/coin_data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class PriceScreen extends StatefulWidget {
   @override
@@ -6,6 +10,19 @@ class PriceScreen extends StatefulWidget {
 }
 
 class _PriceScreenState extends State<PriceScreen> {
+
+String selectedCurrency = 'USD';
+
+List<Text> getPickerItems() {
+  List<Text> pickerItems = [];
+
+  for(String currency in currenciesList)
+  {
+    
+    pickerItems.add(Text(currency));
+  } 
+  return pickerItems;
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +59,12 @@ class _PriceScreenState extends State<PriceScreen> {
             alignment: Alignment.center,
             padding: EdgeInsets.only(bottom: 30.0),
             color: Colors.lightBlue,
-            child: null,
+            child: CupertinoPicker (
+              backgroundColor: Colors.lightBlue,
+              itemExtent: 32.0,
+              onSelectedItemChanged: (value) {},
+              children: getPickerItems(),
+            )
           ),
         ],
       ),
